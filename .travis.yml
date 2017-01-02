@@ -4,6 +4,8 @@ php:
   - hhvm
   - nightly
 
+before_install: echo "extension = mongodb.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+
 install:
   - travis_retry composer self-update
   - travis_retry composer --version
