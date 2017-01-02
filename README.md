@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/fr05t1k/slim-example.svg?branch=master)](https://travis-ci.org/fr05t1k/slim-example)
+
 ## Description
 This service stores information from an external provider (e.x. facebook).
 
