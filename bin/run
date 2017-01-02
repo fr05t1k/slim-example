@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+echo ""
+
+case $1 in
+    up)
+        docker-compose up -d --build
+    ;;
+    down)
+        docker-compose down
+    ;;
+    test|tests)
+            docker-compose run --rm php bin/phpunit ${*:2}
+    ;;
+    console)
+            docker-compose run --rm php bin/console ${*:2}
+    ;;
+    cov|coverage)
+        docker-compose run --rm php bin/phpunit ${*:2} --coverage-html=./var/coverage
+        open var/coverage/dashboard.html
+    ;;
+    *)
+        echo "Command not found!"
+        echo ""
+        echo "Available commands: app, tests, test"
+        echo "  up       - run application"
+        echo "  down     - shut down application"
+        echo "  console  - run console commands"
+        echo "  test     - run tests"
+        echo "  coverage - run tests with coverage"
+esac

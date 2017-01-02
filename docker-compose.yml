@@ -1,0 +1,16 @@
+version: '2'
+volumes:
+    mongodb:
+        driver: local
+services:
+    mongodb:
+        image: library/mongo:latest
+        ports:
+            - ${SLIM_EXAMPLE_MONGO_PORT_EXPOSE}:27017
+    php:
+        env_file: .env
+        build: docker/php
+        ports:
+            - ${SLIM_EXAMPLE_HTTP_PORT_EXPOSE}:8080
+        volumes:
+            - "./:/var/www"

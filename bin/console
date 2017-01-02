@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+<?php
+require __DIR__ . '/../vendor/autoload.php';
+
+use Symfony\Component\Console\Command\Command;
+
+$dotEnv = new \Dotenv\Dotenv(__DIR__ . '/..');
+$dotEnv->load();
+
+$app = new \Fr05t1k\SlimExample\Console\Application('Slim example');
+
+/** @var Command[] $routes */
+$commands = require __DIR__ . '/../configs/console-commands.php';
+
+$app->addCommands($commands);
+
+$app->run();
