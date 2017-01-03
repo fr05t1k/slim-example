@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace Fr05t1k\SlimExample;
 
@@ -12,6 +12,8 @@ use Doctrine\Common\Cache\ApcuCache;
 trait ConfigureContainerTrait
 {
     /**
+     * Configure container with definitions and use cache (apcu)
+     *
      * @param ContainerBuilder $builder
      */
     protected function configureContainer(ContainerBuilder $builder)

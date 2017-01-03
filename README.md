@@ -12,10 +12,13 @@ This service stores information from an external provider (e.x. facebook).
 ## Usage
 
 ### Endpoints
+
 #### HTTP
 * `/store?token={token}` stores user's information from this token
+
 #### Console
 * `./bin/run console user-info:store -t {token}` stores user's information from this token
+
 ### Console helper
 * `./bin/run up` start application
 * `./bin/run down` stop application

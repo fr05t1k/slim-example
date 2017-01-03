@@ -2,7 +2,6 @@
 
 namespace Fr05t1k\SlimExample\Handler\Common;
 
-
 use Fr05t1k\SlimExample\Provider\AccessToken\AccessTokenInterface;
 use Fr05t1k\SlimExample\Provider\AccessToken\Repository\AccessTokenRepositoryInterface;
 use Fr05t1k\SlimExample\Provider\ProviderInterface;

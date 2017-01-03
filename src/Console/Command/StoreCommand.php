@@ -25,7 +25,7 @@ class StoreCommand extends Command
     /**
      * StoreCommand constructor.
      * @param ContainerInterface $container
-     * @param ProviderInterface $provider
+     * @throws \Symfony\Component\Console\Exception\LogicException
      */
     public function __construct(ContainerInterface $container)
     {

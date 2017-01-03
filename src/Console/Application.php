@@ -5,10 +5,13 @@ namespace Fr05t1k\SlimExample\Console;
 use DI\ContainerBuilder;
 use Fr05t1k\SlimExample\ConfigureContainerTrait;
 use Interop\Container\ContainerInterface;
+use Interop\Container\Exception\NotFoundException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\LogicException;
 
 /**
+ * Symfony console with php-di container
+ *
  * Class ConsoleApplication
  * @package Fr05t1k\SlimExample\Console
  */
@@ -26,6 +29,7 @@ class Application extends \Symfony\Component\Console\Application
      *
      * @param string $name
      * @param string $version
+     * @throws \Symfony\Component\Console\Exception\LogicException
      */
     public function __construct(string $name = 'UNKNOWN', string $version = 'UNKNOWN')
     {
@@ -34,7 +38,7 @@ class Application extends \Symfony\Component\Console\Application
         if (!file_exists($this->getSlimBridgeConfigPath())) {
             throw new LogicException(
                 sprintf(
-                    "Slim bridge php-di config does not exist. Please check path %s",
+                    'Slim bridge php-di config does not exist. Please check path %s',
                     $this->getSlimBridgeConfigPath()
                 )
             );
@@ -52,6 +56,7 @@ class Application extends \Symfony\Component\Console\Application
      *
      * @see Application::AddCommands()
      * @param array $commands
+     * @throws LogicException
      */
     public function addCommands(array $commands)
     {
@@ -61,10 +66,7 @@ class Application extends \Symfony\Component\Console\Application
                 // Check if given class exists
                 if (!class_exists($command)) {
                     throw new LogicException(
-                        sprintf(
-                            "Class of command %s does not exist",
-                            $command
-                        )
+                        sprintf('Class of command %s does not exist', $command)
                     );
                 }
                 $this->addCommandByClassName($command);
@@ -74,11 +76,7 @@ class Application extends \Symfony\Component\Console\Application
                     $this->add($command);
                 } else {
                     throw new LogicException(
-                        sprintf(
-                            "The command %s MUST be an instance of %s",
-                            get_class($command),
-                            Command::class
-                        )
+                        sprintf('The command %s MUST be an instance of %s', get_class($command), Command::class)
                     );
                 }
             }
@@ -102,18 +100,33 @@ class Application extends \Symfony\Component\Console\Application
      *
      * @param string $className
      * @return Command
+     * @throws \Symfony\Component\Console\Exception\LogicException
      */
     public function addCommandByClassName($className)
     {
-        $command = $this->container->get($className);
+        $command = $this->getCommandByClassName($className);
+        $this->add($command);
+        return $command;
+    }
 
-        if ($command instanceof Command) {
-            $this->add($command);
-            return $command;
+    /**
+     * @param $className
+     * @return Command
+     * @throws LogicException
+     */
+    private function getCommandByClassName($className): Command
+    {
+        try {
+            $command = $this->container->get($className);
+
+            if ($command instanceof Command) {
+                return $command;
+            }
+        } catch (NotFoundException $e) {
         }
 
         throw new LogicException(sprintf(
-            'Command %s MUST be instance of %s',
+            'Command %s MUST be instance of %s and exists',
             $className,
             Command::class
         ));
